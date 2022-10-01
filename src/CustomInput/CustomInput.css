@@ -1,0 +1,11 @@
+.custom-input {
+    color: black;
+    border-radius: 7px;
+    background-color: whitesmoke;
+    padding: 5px 10px;
+}
+
+.bit-input {
+    font-size: 30px;
+    padding: 20px;
+}

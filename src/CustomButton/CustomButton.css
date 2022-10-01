@@ -1,0 +1,11 @@
+.custom-button {
+    padding: 10px 5px;
+    border-radius: 5px;
+    color: black;
+    background-color: whitesmoke;
+}
+
+.big-button {
+    font-size: 30px;
+    padding: 20px 10px;
+}
