@@ -2,19 +2,19 @@ type QueueItem = () => Promise<void>;
 
 export default class Typewriter {
   #queue: QueueItem[] = [];
-  element: HTMLElement;
-  loop: boolean;
-  typingSpeed: number;
-  deletingSpeed: number;
+  #element: HTMLElement;
+  #loop: boolean;
+  #typingSpeed: number;
+  #deletingSpeed: number;
   constructor(
     parent: HTMLElement,
     { loop = false, typingSpeed = 50, deletingSpeed = 50 } = {}
   ) {
-    this.element = document.createElement('div');
-    parent.append(this.element);
-    this.loop = loop;
-    this.typingSpeed = typingSpeed;
-    this.deletingSpeed = deletingSpeed;
+    this.#element = document.createElement('div');
+    parent.append(this.#element);
+    this.#loop = loop;
+    this.#typingSpeed = typingSpeed;
+    this.#deletingSpeed = deletingSpeed;
   }
 
   #addToQueue(
@@ -29,14 +29,14 @@ export default class Typewriter {
     this.#addToQueue((resolve) => {
       let i = 0;
       const intervalId = setInterval(() => {
-        this.element.append(string[i]);
+        this.#element.append(string[i]);
         i++;
 
         if (i >= string.length) {
           clearInterval(intervalId);
           resolve();
         }
-      }, this.typingSpeed);
+      }, this.#typingSpeed);
     });
     return this;
   }
@@ -45,9 +45,9 @@ export default class Typewriter {
     this.#addToQueue((resolve) => {
       let i = 0;
       const intervalId = setInterval(() => {
-        this.element.innerText = this.element.innerText.substring(
+        this.#element.innerText = this.#element.innerText.substring(
           0,
-          this.element.innerText.length - 1
+          this.#element.innerText.length - 1
         );
         i++;
 
@@ -55,19 +55,19 @@ export default class Typewriter {
           clearInterval(intervalId);
           resolve();
         }
-      }, this.deletingSpeed);
+      }, this.#deletingSpeed);
     });
     return this;
   }
 
-  deleteAll(customDeleteSpeed = this.deletingSpeed) {
+  deleteAll(customDeleteSpeed = this.#deletingSpeed) {
     this.#addToQueue((resolve) => {
       const intervalId = setInterval(() => {
-        this.element.innerText = this.element.innerText.substring(
+        this.#element.innerText = this.#element.innerText.substring(
           0,
-          this.element.innerText.length - 1
+          this.#element.innerText.length - 1
         );
-        if (this.element.innerText.length === 0) {
+        if (this.#element.innerText.length === 0) {
           clearInterval(intervalId);
           resolve();
         }
@@ -87,7 +87,7 @@ export default class Typewriter {
     let cb = this.#queue.shift();
     while (cb != null) {
       await cb();
-      if (this.loop) this.#queue.push(cb);
+      if (this.#loop) this.#queue.push(cb);
       cb = this.#queue.shift();
     }
     return this;
